@@ -23,7 +23,8 @@ export default function App() {
   const [vehicleType, setVehicleType] = useState<VehicleType>('car');
 
   const [lastSyncTime, setLastSyncTime] = useState<Date | null>(null);
-  const [dataSource, setDataSource] = useState<'live-api' | 'simulated-live'>('simulated-live');
+  const [dataSource, setDataSource] = useState<'lta-datamall' | 'data.gov.sg' | 'simulated-live'>('simulated-live');
+  const [statusMessage, setStatusMessage] = useState<string>('');
   const [isRefreshing, setIsRefreshing] = useState<boolean>(false);
 
   // User Geolocation
@@ -80,6 +81,9 @@ export default function App() {
       setCarparks(result.updatedCarparks);
       setDataSource(result.dataSource);
       setLastSyncTime(result.lastSyncTime);
+      if (result.statusMessage) {
+        setStatusMessage(result.statusMessage);
+      }
     } catch (e) {
       console.error('Failed to sync live carparks:', e);
     } finally {
@@ -296,7 +300,7 @@ export default function App() {
 
             <div className="flex items-center gap-2 text-neutral-400 font-mono text-[11px]">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-              <span>Direct Singapore Live Transport Feed</span>
+              <span>{statusMessage || 'LTA DataMall & Data.gov.sg Active'}</span>
             </div>
           </div>
         </section>

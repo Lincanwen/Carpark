@@ -9,7 +9,7 @@ interface HeaderProps {
   setVehicleType: (vt: VehicleType) => void;
   savedCount: number;
   lastSyncTime: Date | null;
-  dataSource: 'live-api' | 'simulated-live';
+  dataSource: 'lta-datamall' | 'data.gov.sg' | 'simulated-live';
   isRefreshing: boolean;
   onRefresh: () => void;
 }
@@ -28,6 +28,12 @@ export const Header: React.FC<HeaderProps> = ({
   const formatSyncTime = (date: Date | null) => {
     if (!date) return 'Syncing...';
     return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+  };
+
+  const getSourceLabel = () => {
+    if (dataSource === 'lta-datamall') return 'LTA DataMall + Data.gov';
+    if (dataSource === 'data.gov.sg') return 'Data.gov.sg Live Feed';
+    return 'Real-Time Sync';
   };
 
   return (
@@ -160,7 +166,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {lastSyncTime ? formatSyncTime(lastSyncTime) : 'Updating'}
               </span>
               <span className="text-[10px] text-emerald-400 font-medium">
-                {dataSource === 'live-api' ? 'Data.gov.sg Live' : 'Real-Time Sync'}
+                {getSourceLabel()}
               </span>
             </div>
 
